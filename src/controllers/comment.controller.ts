@@ -25,12 +25,12 @@ class CommentController {
         try {
 
             const comment: CommentDocument | null = await CommentService.findById(req.params.id);
-            res.json(comment);
+            return res.json(comment);
             
 
         } catch (error) {
 
-            res.status(500).json(error);
+            return res.status(500).json(error);
 
         }
 
@@ -41,11 +41,11 @@ class CommentController {
         try {
 
             const comments: CommentDocument[] = await CommentService.findAll();
-            res.json(comments);
+            return res.json(comments);
 
         } catch (error) {
 
-            res.status(500).json(error);
+            return res.status(500).json(error);
 
         }
 
@@ -56,11 +56,11 @@ class CommentController {
         try {
             
             const comments: CommentDocument[] = await CommentService.findByParentId(req.params.parentId);
-            res.json(comments);
+            return res.json(comments);
 
         } catch (error) {
 
-            res.status(500).json(error);
+           return res.status(500).json(error);
 
         }
 
@@ -83,11 +83,11 @@ class CommentController {
             }
 
             const updatedComment: CommentDocument | null = await CommentService.update(req.params.id, req.body as CommentInput);
-            res.json(updatedComment);
+            return res.json(updatedComment);
 
         } catch (error) {
 
-            res.status(500).json(error);
+           return res.status(500).json(error);
 
         }
 
@@ -110,11 +110,11 @@ class CommentController {
 
             
             await CommentService.delete(req.params.id);
-            res.json({ message: "Comment deleted successfully" });
+            return res.json({ message: "Comment deleted successfully" });
 
         } catch (error) {
 
-            res.status(500).json(error);
+            return res.status(500).json(error);
 
         }
         

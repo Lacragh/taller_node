@@ -25,7 +25,7 @@ class ReactionController {
         try {
             
             const reactions = await ReactionService.findByCommentId(req.params.commentId);
-            res.json(reactions);
+            return res.json(reactions);
 
         } catch (error) {
 
@@ -45,11 +45,11 @@ class ReactionController {
             if (!reaction) {
                 return res.status(404).json({ message: "Reaction not found or you do not have permission to delete this reaction" });
             }
-            res.json({ message: "Reaction deleted successfully" });
+            return res.json({ message: "Reaction deleted successfully" });
 
         } catch (error) {
 
-            res.status(500).json(error);
+           return res.status(500).json(error);
 
         }
 

@@ -18,7 +18,7 @@ class userController {
         }catch (error) {
 
             if(error instanceof ReferenceError){
-                res.status(400).json({ message: "User already exists" })
+                return res.status(400).json({ message: "User already exists" })
             }
             return res.status(500).json(error);
 
@@ -28,16 +28,16 @@ class userController {
     public async login(req: Request, res:Response){
         try{
             const userObj = await userService.login(req.body);
-            res.status(200).json(userObj)
+            return res.status(200).json(userObj)
         }
         catch (error){
             console.log(error)
             if (error instanceof ReferenceError){
-                res.status(400).json({ message:"User does not exists"})
+                return res.status(400).json({ message:"User does not exists"})
             }else if(error instanceof ReferenceError){
-                res.status(400).json({ message:"Not Authorized"})
+                return res.status(400).json({ message:"Not Authorized"})
             }
-            res.status(500).json(error)
+            return res.status(500).json(error)
         }
         
     }
@@ -47,11 +47,11 @@ class userController {
         try{
 
             const user: UserDocument | null = await userService.findById(req.params.id);
-            res.json(user);
+            return res.json(user);
 
         }catch (error) {
 
-            res.status(500).json(error);
+           return res.status(500).json(error);
 
         }
     
@@ -62,11 +62,11 @@ class userController {
         try{
 
             const users: UserDocument[] = await userService.findAll();
-            res.json(users);
+            return res.json(users);
 
         }catch (error) {
 
-            res.status(500).json(error);
+            return res.status(500).json(error);
 
         }
     
@@ -75,16 +75,19 @@ class userController {
     public async update(req: Request, res: Response) {
     
         try{
-
+            if (req.body.loggedUser.role !== 'superadmin') {
+                console.log(req.body.loggedUser)
+                return res.status(403).json({ message: 'Forbidden' });
+            }
             const user: UserDocument | null = await userService.update(req.params.id, req.body as UserInput);
             if(!user) {
-                res.status(404).json({ message: `User with id: ${req.params.id} not found` })
+                return res.status(404).json({ message: `User with id: ${req.params.id} not found` })
             };
-            res.json(user);
+            return res.json(user);
 
         }catch (error) {
 
-            res.status(500).json(error);
+            return res.status(500).json(error);
 
         }
     
@@ -93,16 +96,19 @@ class userController {
     public async delete(req: Request, res: Response) {
     
         try{
-
+            if (req.body.loggedUser.role !== 'superadmin') {
+                console.log(req.body.loggedUser)
+                return res.status(403).json({ message: 'Forbidden' });
+            }
             const user: UserDocument | null = await userService.delete(req.params.id);
             if(!user) {
-                res.status(404).json({ message: `User with id: ${req.params.id} not found` })
+               return res.status(404).json({ message: `User with id: ${req.params.id} not found` })
             };
-            res.json(user);
+            return res.json(user);
 
         }catch (error) {
 
-            res.status(500).json(error);
+           return res.status(500).json(error);
 
         }
     
