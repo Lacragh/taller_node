@@ -1,0 +1,12 @@
+import mongoose from "mongoose";
+import dotenv from "dotenv";
+
+dotenv.config();
+
+const connectionString = process.env.MONGO_URL || "mongodb+srv://victor:123@compunet3.mnk2c.mongodb.net/Talleres";
+
+export const db = mongoose.connect(connectionString).then(
+                                                    () => console.log("Connected to MongoDB")
+                                                ).catch(
+                                                    (err) => console.log(err)
+                                                )
