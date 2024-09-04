@@ -53,3 +53,7 @@ Asegúrate de tener instalados los siguientes requisitos:
 4. Dificultades encontradas:
    
    Gestión de Reacciones: Durante el desarrollo de la funcionalidad de reacciones, se encontraron desafíos al evitar que los usuarios reaccionaran múltiples veces al mismo comentario con el mismo tipo de       reacción. Esto se resolvió implementando verificaciones adicionales en el controlador.
+
+
+5. Despliegue
+   https://tallernode-production.up.railway.app/
