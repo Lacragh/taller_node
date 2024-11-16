@@ -1,6 +1,15 @@
 import ReactionModel, { ReactionDocument, ReactionInput } from "../models/reaction.model";
 
 class ReactionService {
+
+    // Verifica si ya existe una reacción de un usuario en un comentario
+    public async findByUserAndComment(userId: string, commentId: string): Promise<ReactionDocument | null> {
+        try {
+            return ReactionModel.findOne({ userId, commentId }).exec();
+        } catch (error) {
+            throw error;  // Propaga cualquier error que ocurra
+        }
+    }
     
     // Crea una nueva reacción en la base de datos
     public async create(reactionInput: ReactionInput): Promise<ReactionDocument> {

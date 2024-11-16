@@ -8,6 +8,13 @@ class ReactionController {
         try {
             const { id: userId } = req.body.loggedUser;  // Obtiene el ID del usuario desde el cuerpo de la solicitud
             const { commentId, type } = req.body;  // Obtiene el ID del comentario y el tipo de reacción desde el cuerpo de la solicitud
+
+            // Verifica si ya existe una reacción del usuario en el comentario
+            const existingReaction = await ReactionService.findByUserAndComment(userId, commentId);
+            if (existingReaction) {
+                return res.status(400).json({ message: "You have already reacted to this comment" });
+            }
+            
             const reaction = await ReactionService.create({ userId, commentId, type });  // Llama al servicio para crear la reacción
             return res.status(201).json(reaction);  // Devuelve la reacción creada con un estado 201
         } catch (error) {
