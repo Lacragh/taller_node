@@ -1,0 +1,20 @@
+fragment UserFields on User {
+    id
+    name
+    email
+    role
+}
+
+fragment CommentFields on Comment {
+    id
+    content
+    userId
+    parentId
+}
+
+fragment ReactionFields on Reaction {
+    id
+    type
+    userId
+    commentId
+}

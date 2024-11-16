@@ -1,0 +1,83 @@
+type Query {
+    user(id: ID!): User
+    users: [User!]!
+    comments: [Comment!]!
+    commentByParent(parentId: ID!): [Comment!]!
+    getComment(id: ID!): Comment!
+    reactionsByComment(commentId: ID!): [Reaction!]!
+}
+
+type Mutation {
+    createUser(input: CreateUserInput!): User!
+    login(input: LoginInput!): AuthPayload!
+    updateUser(id: ID!, input: UpdateUserInput!): User!
+    deleteUser(id: ID!): User!
+
+    createComment(input: CreateCommentInput!): Comment!
+    updateComment(id: ID!, input: UpdateCommentInput!): Comment!
+    deleteComment(id: ID!): Comment!
+
+    createReaction(input: CreateReactionInput!): Reaction!
+    deleteReaction(commentId: ID!): Reaction!
+}
+
+type User {
+    id: ID!
+    name: String!
+    email: String!
+    role: String!
+}
+
+type Comment {
+    id: ID!
+    content: String!
+    userId: ID!
+    parentId: ID
+}
+
+type Reaction {
+    id: ID!
+    type: String!
+    userId: ID!
+    commentId: ID!
+}
+
+type AuthPayload {
+    email: String!
+    name: String!
+    token: String!
+}
+
+# Input Types for Mutations
+input CreateUserInput {
+    name: String!
+    email: String!
+    password: String!
+    role: String
+}
+
+input LoginInput {
+    email: String!
+    password: String!
+}
+
+input UpdateUserInput {
+    name: String
+    email: String
+    password: String
+    role: String
+}
+
+input CreateCommentInput {
+    content: String!
+    parentId: ID
+}
+
+input UpdateCommentInput {
+    content: String!
+}
+
+input CreateReactionInput {
+    type: String!
+    commentId: ID!
+}
