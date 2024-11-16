@@ -54,8 +54,12 @@ export const resolvers = {
     },
 
     Mutation: {
-        createUser: async (_: any, { input }: { input: any }) => {
+        createUser: async (_: any, { input }: { input: any }, context: any) => {
             try {
+                // Verificar si el usuario es superadmin
+                if (context.user.role !== 'superadmin') {
+                    throw createGraphQLError("Forbidden: Only superadmin can create users", "FORBIDDEN");
+                }
                 return await userService.create(input);
             } catch (error) {
                 throw handleError(error);
@@ -68,8 +72,12 @@ export const resolvers = {
                 throw handleError(error);
             }
         },
-        updateUser: async (_: any, { id, input }: { id: string; input: any }) => {
+        updateUser: async (_: any, { id, input }: { id: string; input: any }, context: any) => {
             try {
+                // Verificar si el usuario es superadmin
+                if (context.user.role !== 'superadmin') {
+                    throw createGraphQLError("Forbidden: Only superadmin can update users", "FORBIDDEN");
+                }
                 const user = await userService.update(id, input);
                 if (!user) throw createGraphQLError(`User with id ${id} not found`, "NOT_FOUND");
                 return user;
@@ -77,8 +85,12 @@ export const resolvers = {
                 throw handleError(error);
             }
         },
-        deleteUser: async (_: any, { id }: { id: string }) => {
+        deleteUser: async (_: any, { id }: { id: string }, context: any) => {
             try {
+                // Verificar si el usuario es superadmin
+                if (context.user.role !== 'superadmin') {
+                    throw createGraphQLError("Forbidden: Only superadmin can delete users", "FORBIDDEN");
+                }
                 const user = await userService.delete(id);
                 if (!user) throw createGraphQLError(`User with id ${id} not found`, "NOT_FOUND");
                 return user;
@@ -87,34 +99,43 @@ export const resolvers = {
             }
         },
 
-        createComment: async (_: any, { input }: { input: any }) => {
+        createComment: async (_: any, { input }: { input: any }, context: any) => {
             try {
+                // Asociar el comentario con el usuario autenticado
+                input.userId = context.user.id;
                 return await commentService.create(input);
             } catch (error) {
                 throw handleError(error);
             }
         },
-        updateComment: async (_: any, { id, input }: { id: string; input: any }) => {
+        updateComment: async (_: any, { id, input }: { id: string; input: any }, context: any) => {
             try {
-                const comment = await commentService.update(id, input);
+                const comment = await commentService.findById(id);
                 if (!comment) throw createGraphQLError(`Comment with id ${id} not found`, "NOT_FOUND");
-                return comment;
+                if (comment.userId.toString() !== context.user.id) {
+                    throw createGraphQLError("Forbidden: You do not have permission to update this comment", "FORBIDDEN");
+                }
+                return await commentService.update(id, input);
             } catch (error) {
                 throw handleError(error);
             }
         },
-        deleteComment: async (_: any, { id }: { id: string }) => {
+        deleteComment: async (_: any, { id }: { id: string }, context: any) => {
             try {
-                const comment = await commentService.delete(id);
+                const comment = await commentService.findById(id);
                 if (!comment) throw createGraphQLError(`Comment with id ${id} not found`, "NOT_FOUND");
-                return comment;
+                if (comment.userId.toString() !== context.user.id) {
+                    throw createGraphQLError("Forbidden: You do not have permission to delete this comment", "FORBIDDEN");
+                }
+                return await commentService.delete(id);
             } catch (error) {
                 throw handleError(error);
             }
         },
 
-        createReaction: async (_: any, { input }: { input: any }) => {
+        createReaction: async (_: any, { input }: { input: any }, context: any) => {
             try {
+                input.userId = context.user.id; // Asociar reacción al usuario autenticado
                 return await reactionService.create(input);
             } catch (error) {
                 throw handleError(error);

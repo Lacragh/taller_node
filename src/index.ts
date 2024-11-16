@@ -1,5 +1,6 @@
 import express, { Express, Request, Response } from "express";
 import dotenv from 'dotenv';
+// Agregar logica de Apollo server si es necesario
 
 import { router } from './routes/posts';
 import { router as user } from './routes/user';
