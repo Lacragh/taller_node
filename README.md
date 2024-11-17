@@ -1,106 +1,101 @@
-# Taller Node 
+# Taller de Migración a GraphQL
 
-## Desarrolladores
-- **Victor Manuel Garzon Meneses**
-- **Santiago Jose Belalcazar**
+# Desarrollado por:
+- Victor Manuel Garzon Meneses
+- Santiago Jose Belalcazar
+- Manuel Herrera
 
-Este proyecto es una API backend construida con Node.js y TypeScript que permite la gestión de usuarios y comentarios. Incluye autenticación y autorización mediante JWT, y operaciones CRUD (Crear, Leer, Actualizar, Eliminar) para usuarios y comentarios. La base de datos utilizada es MongoDB.
 
-## Tabla de contenidos
+## Descripción del Proyecto
+Este proyecto consiste en la migración de una API REST existente a GraphQL, manteniendo la funcionalidad original pero aprovechando las ventajas de GraphQL para mejorar la eficiencia y flexibilidad en la gestión de datos.
 
-   - Requisitos Previos
-   - Instalación
-   - Configuración
-   - Endpoints
-   - Tecnologías Utilizadas
-   - Funcionalidades
-   - Dificultades
-   - Pruebas
-   - Despliegue
-
-## Requisitos Previos
-
-Asegúrate de tener instalados los siguientes requisitos:
-
-- [Node.js](https://nodejs.org/) 
-- [npm](https://www.npmjs.com/) o [yarn](https://yarnpkg.com/)
-
-## Instalación
-
-1. Clona este repositorio:
-   ```bash
-   git clone https://github.com/tu-usuario/taller-node.git
-   cd taller-node
-  
-2. Instala las dependencias con npm o yarn:
-   ```bash
-   npm install
-   # o
-   yarn install
-  
-## Configuracion:
-
-1. Renombra el archivo .env.example a .env y actualiza las variables de entorno con tus credenciales. Ejemplo:
-   
-     ```bash 
-     MONGO_URL=mongodb+srv://usuario:password@cluster.mongodb.net/miBaseDeDatos
-     JWT_SECRET=tuClaveSecretaParaJWT
-     PORT=3000
-     ```
-
-2. Inicia el servidor:
-
-     ```bash
-     npm run dev
-     # o
-     yarn dev
-     ```
-
-## Endpoints
-
-En el repositorio se incluye un JSON de Postman que tiene pruebas en un entorno local de los endpoints, en el puede encontrar cada una de las operaciones que se tuvieron en cuenta para la aplicacion.
-
-### Gestión de Usuarios
-
-   - POST /api/v1/user/login - Login de un usuario.
-   - POST /api/v1/user/ - Crea un nuevo usuario (restringido solo al rol superadmin).
-   - GET /api/v1/user/ - Obtiene la lista de usuarios registrados.
-   - GET /api/v1/user/profile - Obtiene la informacion del usuario logeado.
-   - GET /api/v1/user/:id - Obtiene la informacion de un usuario por su ID.
-   - PUT /api/v1/user/:id - Modifica un usuario existente (restringido solo al rol superadmin).
-   - DELETE /api/v1/user/:id - Eliminar un usuario (restringido solo al rol superadmin).
-
-### Gestión de Comentarios
-
-   - POST /api/v1/comment/ - Crea un nuevo comentario.
-   - POST /api/v1/comment/ - Crea una respuesta a un comentario. (Debe indicarse el comentario al que responde por medio del atributo "parentID : id")
-   - GET /api/v1/comment/:id - Obtiene el comentario con la ID especificada.
-   - GET /api/v1/comment/parent/:parentId - Obtiene las respuestas del comentario indicado.
-   - PUT /api/v1/comment/:id - Modifica el comentario indicado.
-   - DELETE /api/v1/comment/:id - Elimina el comentario indicado.
-
-### Gestión de Reacciones
-
-   - POST /api/v1/reaction/ - Crea una reaccion a un comentario (Debe indicarse el comentario al que reacciona por medio del atributo "commentId : id").
-   - GET /api/v1/reaction/:commentId - Obtiene las reacciones del comentario indicado.
-   - DELETE /api/v1/reaction/:commentId - Elimina una reacción del comentario indicado.
+## Características Principales
+- **Gestión de Usuarios**: Sistema completo de CRUD con roles (superadmin y usuario regular)
+- **Gestión de Comentarios**: Creación, lectura, actualización y eliminación de comentarios
+- **Sistema de Respuestas**: Implementación de hilos de discusión
+- **Sistema de Reacciones**: Permite a usuarios reaccionar a comentarios
+- **Autenticación**: Sistema JWT para proteger rutas y operaciones
 
 ## Tecnologías Utilizadas
+- Node.js
+- TypeScript
+- GraphQL
+- MongoDB
+- JWT para autenticación
 
-   - Node.js: Entorno de ejecución para JavaScript en el servidor.
-   - TypeScript: Superconjunto de JavaScript que añade tipado estático.
-   - MongoDB: Base de datos NoSQL para la persistencia de datos.
-   - JWT: Para la autenticación y autorización segura de los usuarios.
+## Estructura del Proyecto
+La estructura del proyecto se organiza de la siguiente manera:
+```
+src/
+├── config/         # Configuración de la base de datos
+├── controllers/    # Controladores de la aplicación
+├── graphql/        # Esquemas y resolvers de GraphQL
+├── middlewares/    # Middlewares de autenticación y validación
+├── models/         # Modelos de datos
+├── routes/         # Rutas de la API
+└── services/       # Servicios de la aplicación
+```
 
-## Funcionalidades de la aplicacion
+## Instalación y Configuración
 
-   - **Autenticación y Autorización**: Registro e inicio de sesión de usuarios mediante JWT.
-   - **Roles de Usuario**: Soporte para diferentes roles de usuario, como `superadmin` y `usuario` regular.
-   - **Operaciones CRUD**: Gestión completa de usuarios y comentarios (crear, leer, actualizar, eliminar).
-   - **Hilos de Discusión**: Permite respuestas a comentarios, creando un hilo de discusión.
-   - **Reacciones a Comentarios**: Los usuarios pueden reaccionar a los comentarios con "me gusta", "amor", "en desacuerdo", etc.
-   - **Protección de Rutas**: Las rutas CRUD están protegidas con middleware de autenticación y autorización.
+### Requisitos Previos
+- Node.js (v14 o superior)
+- MongoDB
+- npm o yarn
 
+### Pasos de Instalación
+1. Clonar el repositorio:
+```bash
+git clone https://github.com/Lacragh/taller_node/tree/graphql
+cd https://github.com/Lacragh/taller_node/tree/graphql
+```
+
+2. Instalar dependencias:
+```bash
+npm install
+```
+
+3. Configurar variables de entorno:
+Crear un archivo `.env` con las siguientes variables:
+```
+MONGO_URL=<tu-url-de-mongodb>
+JWT_SECRET=<tu-clave-secreta>
+PORT=3000
+```
+
+4. Iniciar el servidor:
+```bash
+npm run dev
+```
+
+## Endpoints GraphQL
+
+### Queries
+- `users`: Obtiene lista de usuarios
+- `user(id: ID!)`: Obtiene un usuario específico
+- `comments`: Obtiene todos los comentarios
+- `commentByParent(parentId: ID!)`: Obtiene respuestas a un comentario
+- `reactionsByComment(commentId: ID!)`: Obtiene reacciones de un comentario
+
+### Mutations
+- `createUser(input: CreateUserInput!)`: Crea nuevo usuario
+- `login(input: LoginInput!)`: Inicia sesión
+- `createComment(input: CreateCommentInput!)`: Crea comentario
+- `createReaction(input: CreateReactionInput!)`: Crea reacción
+
+## Seguridad
+- Autenticación mediante JWT
+- Middleware de autorización para proteger rutas
+- Validación de roles para operaciones específicas
+
+## Dificultades Encontradas
+1. **Gestión de Reacciones**: Se encontraron desafíos al implementar la lógica para evitar reacciones duplicadas.
+2. **Migración a GraphQL**: La transición desde REST requirió una reestructuración significativa de los resolvers.
+
+## Pruebas
+Se incluye una colección de Postman con pruebas para todas las funcionalidades:
+
+```104:116:README.md
 ## Pruebas
 
 Se incluye un archivo JSON de Postman en el proyecto (Archivo_JSON_POSTMAN.json) que contiene pruebas de cada una de las funcionalidades de la API.
@@ -114,9 +109,18 @@ Este archivo contiene todas las solicitudes y scripts de test utilizados para va
 3. Selecciona el archivo `Archivo_JSON_POSTMAN.json` .
 4. Ejecuta las pruebas desde la colección importada.
 
-## Dificultades encontradas:
-   
-   Gestión de Reacciones: Durante el desarrollo de la funcionalidad de reacciones, se encontraron desafíos al evitar que los usuarios reaccionaran múltiples veces al mismo comentario con el mismo tipo de       reacción. Esto se resolvió implementando verificaciones adicionales en el controlador.
+```
+
 
 ## Despliegue
-   https://tallernode-production.up.railway.app/
+La aplicación está desplegada en Railway:
+[https://tallernode-production.up.railway.app/](https://tallernode-production.up.railway.app/)
+
+## Estado del Proyecto
+- ✅ Implementación de GraphQL
+- ✅ Sistema de Autenticación
+- ✅ CRUD de Usuarios
+- ✅ Sistema de Comentarios
+- ✅ Sistema de Reacciones
+- ✅ Documentación
+- ✅ Pruebas
