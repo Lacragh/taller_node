@@ -1,0 +1,113 @@
+mutation Login {
+  login(input: { email: "admin@example.com", password: "12345678" }) {
+    token
+  }
+}
+
+
+query GetAllUsers {
+  users {
+    id
+    name
+    email
+    role
+  }
+}
+
+query GetUser {
+  user(id: "66d3e02a0f2be63a3d840b44") {
+    id
+    name
+    email
+    role
+  }
+}
+
+query GetAllComments {
+  comments {
+    id
+    content
+    parentId
+  }
+}
+
+query GetCommentsByParent {
+  commentByParent(parentId: "66d5443bbac7f8cb972f3726") {
+    id
+    content
+  }
+}
+
+query GetComment {
+  getComment(id: "66d54731f051c580b05aadf9") {
+    id
+    content
+    userId
+  }
+}
+
+
+query GetReactionsByComment {
+  reactionsByComment(commentId: "66d5443bbac7f8cb972f3726") {
+    id
+    type
+    commentId
+  }
+}
+
+mutation CreateUser {
+  createUser(input: { name: "EJEMPLO", email: "NUEVO@example.com", password: "password123", role: "user" }) {
+    id
+    name
+    email
+    role
+  }
+}
+
+mutation UpdateUser {
+  updateUser(id: "673e1981211b3d96c4d81a8d", input: { name: "Updated", email: "john_updated@example.com" }) {
+    id
+    name
+    email
+    role
+  }
+}
+
+mutation CreateComment {
+  createComment(input: { content: "This is a comment APOLLO", parentId: null }) {
+    id
+    content
+    userId
+  }
+}
+
+mutation UpdateComment {
+  updateComment(id: "673e1a07211b3d96c4d81a91", input: { content: "Updated comment content" }) {
+    id
+    content
+  }
+}
+
+mutation DeleteComment {
+  deleteComment(id: "673e1a07211b3d96c4d81a91") {
+    id
+    content
+  }
+}
+
+mutation CreateReaction {
+  createReaction(input: { type: "like", commentId: "673e1a8e211b3d96c4d81a99" }) {
+    id
+    type
+    userId
+    commentId
+  }
+}
+
+mutation DeleteReaction {
+  deleteReaction(commentId: "673e1b20211b3d96c4d81aa1") {
+    type
+    commentId
+    userId
+  }
+}
