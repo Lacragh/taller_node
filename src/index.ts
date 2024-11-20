@@ -12,6 +12,7 @@ import { router as user } from "./routes/user";
 import { router as comment } from "./routes/comment";
 import { router as reaction } from "./routes/reaction";
 import { db } from "./config/db";
+import jwt from "jsonwebtoken";
 
 dotenv.config();
 console.log(process.env.DBPASS);
@@ -23,9 +24,10 @@ app.use(express.urlencoded({ extended: true }));
 
 const port = process.env.PORT || 3000;
 
+
 async function startApolloServer() {
-  // Configurar Apollo Server
   const server = new ApolloServer({
+    csrfPrevention: false,
     typeDefs,
     resolvers,
   });
@@ -37,7 +39,23 @@ async function startApolloServer() {
     "/graphql",
     cors<cors.CorsRequest>(),
     bodyParser.json(),
-    expressMiddleware(server)
+    expressMiddleware(server, {
+      context: async ({ req }) => {
+        const token = req.headers.authorization?.split(" ")[0]; // Extrae el token
+        if (!token) {
+          console.warn("No token provided in request headers");
+          return {}; // Devuelve un contexto vacío
+        }
+
+        try {
+          const user = jwt.verify(token, process.env.JWT_SECRET || "your_secret_key")
+          return { user }; // Devuelve el usuario autenticado en el contexto
+        } catch (error) {
+          console.error("Invalid token:");
+          return {}; // Contexto vacío si el token no es válido
+        }
+      },
+    })
   );
 
   // Rutas REST

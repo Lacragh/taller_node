@@ -22,6 +22,7 @@ const userSchema = new mongoose.Schema({
     password: { type: String, required: true },  // Contraseña del usuario, obligatoria
     role: { type: String, enum: ['superadmin', 'user'], default: 'user' }  // Rol del usuario, puede ser 'superadmin' o 'user', con valor por defecto 'user'
 },
+
 {
     timestamps: true,  // Agrega automáticamente los campos `createdAt` y `updatedAt`
     collection: "users"  // Nombre de la colección en la base de datos

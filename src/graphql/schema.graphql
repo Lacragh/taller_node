@@ -43,8 +43,6 @@ type Reaction {
 }
 
 type AuthPayload {
-    email: String!
-    name: String!
     token: String!
 }
 
