@@ -111,3 +111,18 @@ mutation DeleteReaction {
     userId
   }
 }
+
+
+query GetAllUsers {
+  users {
+    ...UserFields
+  }
+}
+
+
+fragment UserFields on User {
+  id
+  name
+  email
+  role
+}
